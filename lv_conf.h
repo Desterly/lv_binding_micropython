@@ -19,8 +19,8 @@
  *====================*/
 
 /* Maximal horizontal and vertical resolution to support by the library.*/
-#define LV_HOR_RES_MAX          (480)
-#define LV_VER_RES_MAX          (320)
+#define LV_HOR_RES_MAX          (320)
+#define LV_VER_RES_MAX          (240)
 
 /* Color depth:
  * - 1:  1 byte per pixel
@@ -29,13 +29,13 @@
  * - 32: ARGB8888
  */
 #ifndef LV_COLOR_DEPTH
-#define LV_COLOR_DEPTH     32
+#define LV_COLOR_DEPTH     16
 #endif
 
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
 #ifndef LV_COLOR_16_SWAP
-#define LV_COLOR_16_SWAP   0
+#define LV_COLOR_16_SWAP   1
 #endif
 
 /* 1: Enable screen transparency.
@@ -96,7 +96,7 @@ typedef int16_t lv_coord_t;
 #  define LV_MEM_AUTO_DEFRAG  1
 #else       /*LV_MEM_CUSTOM*/
 #  define LV_MEM_CUSTOM_INCLUDE "include/lv_mp_mem_custom_include.h"   /*Header for the dynamic memory function*/
-#  define LV_MEM_CUSTOM_ALLOC     m_malloc       /*Wrapper to malloc*/
+#  define LV_MEM_CUSTOM_ALLOC(num_bytes)     (m_malloc(num_bytes, true))       /*Wrapper to malloc*/
 #  define LV_MEM_CUSTOM_FREE      m_free         /*Wrapper to free*/
 #endif     /*LV_MEM_CUSTOM*/
 
@@ -324,7 +324,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
  * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
  * LV_LOG_LEVEL_NONE        Do not log anything
  */
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_WARN
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
 
 /* 1: Print the log with 'printf';
  * 0: user need to register a callback with `lv_log_register_print_cb`*/
@@ -407,7 +407,7 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 /* Demonstrate special features */
 #define LV_FONT_MONTSERRAT_12_SUBPX      0
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0  /*bpp = 3*/
-#define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 1  /*Hebrew, Arabic, PErisan letters and all their forms*/
+#define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0  /*Hebrew, Arabic, PErisan letters and all their forms*/
 #define LV_FONT_SIMSUN_16_CJK            0  /*1000 most common CJK radicals*/
 
 /*Pixel perfect monospace font
