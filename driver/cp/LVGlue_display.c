@@ -2,10 +2,8 @@
 
 #include <stdint.h>
 
-#include "py/runtime.h"
-#include "py/objproperty.h"
 
-#include "lvdisplayglue.h"
+#include "LVGlue_display.h"
 #include "lib/lv_bindings/lvgl/lvgl.h"
 
 
@@ -15,7 +13,7 @@ STATIC lv_color_t lv_pixel_buf[(LV_HOR_RES_MAX) * 10];
 STATIC lv_color_t lv_pixel_buf2[(LV_HOR_RES_MAX) * 10];
 
 
-STATIC bool _glue_refresh_area(const lv_area_t * lvarea, lv_color_t * color_p,lvdisplayglue_glue_obj_t * user_data) {
+STATIC bool _glue_refresh_area(const lv_area_t * lvarea, lv_color_t * color_p,lvglue_display_obj_t * user_data) {
     displayio_display_obj_t* display = (displayio_display_obj_t*)user_data->display;
     displayio_area_t clipped = {
             .x1 = lvarea->x1,
@@ -41,9 +39,9 @@ STATIC bool _glue_refresh_area(const lv_area_t * lvarea, lv_color_t * color_p,lv
     return true;
 }
 
-void lvdisplayglue_tick(void) {
+void lvglue_display_tick(void) {
     if (lv_disp_drv.user_data != 0) {
-        lvdisplayglue_glue_obj_t * user_data = (lvdisplayglue_glue_obj_t*)lv_disp_drv.user_data;
+        lvglue_display_obj_t * user_data = (lvglue_display_obj_t*)lv_disp_drv.user_data;
         uint64_t current_time = supervisor_ticks_ms64();
         uint64_t last_refresh = user_data->last_refresh;
         if (last_refresh == 0) last_refresh = current_time;
@@ -54,14 +52,14 @@ void lvdisplayglue_tick(void) {
     }
 }
 void _lv_disp_flush(lv_disp_drv_t * disp, const lv_area_t * area, lv_color_t * color_p) {
-    lvdisplayglue_glue_obj_t * user_data = (lvdisplayglue_glue_obj_t*)disp->user_data;
+    lvglue_display_obj_t * user_data = (lvglue_display_obj_t*)disp->user_data;
     if (user_data->group->in_group && !user_data->group->hidden) {
         _glue_refresh_area(area, color_p, user_data);
     }
     lv_disp_flush_ready(disp);         /* Indicate you are ready with the flushing*/
 }
 
-void lvdisplayglue_construct(lvdisplayglue_glue_obj_t *self) {
+void lvglue_display_construct(lvglue_display_obj_t *self) {
     // Create a dummy group to hold
     displayio_display_obj_t* display = &displays[0].display;
     displayio_group_t* lv_group = m_new_obj(displayio_group_t);
@@ -82,7 +80,7 @@ void lvdisplayglue_construct(lvdisplayglue_glue_obj_t *self) {
     lv_disp_drv_register(&lv_disp_drv); 
 }
 
-void lvdisplayglue_setactive(lvdisplayglue_glue_obj_t *self) {
+void lvglue_display_setactive(lvglue_display_obj_t *self) {
     displayio_group_t* lv_group = (displayio_group_t*)self->group;
     displayio_display_obj_t* display = (displayio_display_obj_t*)self->display;
     common_hal_displayio_display_show(display,lv_group);
