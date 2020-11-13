@@ -499,7 +499,7 @@ if len(obj_names) > 0:
 
 STATIC const mp_obj_type_t mp_{base_obj}_type;
 
-STATIC inline const mp_obj_type_t *get_BaseObj_type()
+STATIC inline const mp_obj_type_t *get_BaseObj_type(void)
 {{
     return &mp_{base_obj}_type;
 }}
@@ -652,7 +652,7 @@ STATIC inline LV_OBJ_T *mp_get_callbacks(mp_obj_t mp_obj)
     return mp_lv_obj->callbacks;
 }
 
-STATIC inline const mp_obj_type_t *get_BaseObj_type();
+STATIC inline const mp_obj_type_t *get_BaseObj_type(void);
 
 STATIC inline mp_obj_t *lv_to_mp(LV_OBJ_T *lv_obj)
 {
@@ -1239,7 +1239,7 @@ def try_generate_struct(struct_name, struct):
  * Struct {struct_name}
  */
 
-STATIC inline const mp_obj_type_t *get_mp_{struct_name}_type();
+STATIC inline const mp_obj_type_t *get_mp_{struct_name}_type(void);
 
 STATIC inline {struct_name}* mp_write_ptr_{struct_name}(mp_obj_t self_in)
 {{
@@ -1303,7 +1303,7 @@ STATIC const mp_obj_type_t mp_{struct_name}_type = {{
     .buffer_p = {{ .get_buffer = mp_blob_get_buffer }}
 }};
 
-STATIC inline const mp_obj_type_t *get_mp_{struct_name}_type()
+STATIC inline const mp_obj_type_t *get_mp_{struct_name}_type(void)
 {{
     return &mp_{struct_name}_type;
 }}
@@ -1412,7 +1412,7 @@ def get_arg_name(arg):
     if isinstance(arg, c_ast.PtrDecl) or isinstance(arg, c_ast.FuncDecl):
         return get_arg_name(arg.type)
     if hasattr(arg, 'declname'): return arg.declname
-    if hasattr(arg, 'name'): return name
+    if hasattr(arg, 'name'): return arg.name
     return 'unnamed_arg'
 
 # print("// Typedefs: " + ", ".join(get_arg_name(t) for t in typedefs))
