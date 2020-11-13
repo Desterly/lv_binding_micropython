@@ -5,7 +5,7 @@
 
 #include "LVGlue_display.h"
 #include "lib/lv_bindings/lvgl/lvgl.h"
-
+#include "supervisor/shared/tick.h"
 
 STATIC lv_disp_drv_t lv_disp_drv;
 STATIC lv_disp_buf_t lv_disp_buf;
@@ -78,6 +78,9 @@ void lvglue_display_construct(lvglue_display_obj_t *self) {
     lv_disp_drv.ver_res = LV_VER_RES_MAX;
     lv_disp_drv.user_data = (lv_indev_drv_user_data_t)self;
     lv_disp_drv_register(&lv_disp_drv); 
+
+    // Make sure supervisor knows to update the tick
+    supervisor_enable_tick();
 }
 
 void lvglue_display_setactive(lvglue_display_obj_t *self) {
