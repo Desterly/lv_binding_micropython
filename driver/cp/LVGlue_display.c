@@ -66,7 +66,7 @@ void lvglue_display_construct(lvglue_display_obj_t *self) {
     self->group = lv_group;
     self->display = display;
     // Set this to the active group
-    common_hal_displayio_display_show(display,lv_group);
+    //common_hal_displayio_display_show(display,lv_group);
 
     // Create the LVGL Buffer and Display
     lv_init();
