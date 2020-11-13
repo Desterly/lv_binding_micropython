@@ -1,6 +1,10 @@
+"""
+`lvgl_filedrv`
+"""
+
 import lvgl as lv
-import uerrno
-import ustruct as struct
+import errno
+import struct
 
 
 def fs_open_cb(drv, fs_file, path, mode):
