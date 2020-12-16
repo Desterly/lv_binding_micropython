@@ -1,5 +1,5 @@
 #include "LVGlue_display.h"
-
+#include "LVGlue_fs.h"
 // Glue Type
 const mp_obj_type_t lvglue_display_type;
 
@@ -40,11 +40,21 @@ const mp_obj_type_t lvglue_display_type = {
     .locals_dict = (mp_obj_dict_t*)&lvglue_display_locals_dict,
 };
 
+// FS Init
+STATIC mp_obj_t mp_lvglue_fs_init(size_t mp_n_args, const mp_obj_t *mp_args)
+{
+    lv_fs_if_fatfs_init();
+    return mp_const_none;
+}
+
+MP_DEFINE_CONST_FUN_OBJ_0(lvglue_fs_init_obj, mp_lvglue_fs_init);
+
 // Module lvglue
 
 STATIC const mp_rom_map_elem_t lvglue_globals_table[] = {
     { MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(MP_QSTR_lvglue) },
     { MP_OBJ_NEW_QSTR(MP_QSTR_display), (mp_obj_t)&lvglue_display_type },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_fsinit), MP_ROM_PTR(&lvglue_fs_init_obj)}
 
 };
 
